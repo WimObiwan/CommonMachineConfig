@@ -1,4 +1,8 @@
 $PROFILEDIR = Split-Path $PROFILE
+$COMMONPROFILE = $MyInvocation.MyCommand.Path
+$COMMONPROFILEDIR = Split-Path $COMMONPROFILE
+
+Write-Host "Executing Common Profile '$COMMONPROFILE'"
 
 $Script:IsDevMachine = $env:COMPUTERNAME -iin ('WIMDESK')
 $Script:IsMyForceDevMachine = $env:COMPUTERNAME -iin ('WIMDESK')
@@ -11,7 +15,8 @@ function Set-AliasWithCheck {
 	)
 	
 	if (Test-Path $Value) {
-		Write-Warning "$Name => $Value"
+		Write-Host "Adding alias: $Name => $Value"
+		
 		Set-Alias -Scope Global $Name $Value
 	}
 }
@@ -49,3 +54,5 @@ if (Get-Module posh-git) {
 	Rename-Item Function:\Prompt PoshGitPrompt -Force
 	function Prompt() {if(Test-Path Function:\PrePoshGitPrompt){++$global:poshScope; New-Item function:\script:Write-host -value "param([object] `$object, `$backgroundColor, `$foregroundColor, [switch] `$nonewline) " -Force | Out-Null;$private:p = PrePoshGitPrompt; if(--$global:poshScope -eq 0) {Remove-Item function:\Write-Host -Force}}PoshGitPrompt}
 }
+
+Write-Host
