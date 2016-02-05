@@ -1,8 +1,9 @@
-$PROFILEDIR = Split-Path $PROFILE
-$COMMONPROFILE = $MyInvocation.MyCommand.Path
-$COMMONPROFILEDIR = Split-Path $COMMONPROFILE
+$ProfileDir = Split-Path $PROFILE
+$CommonProfile = $MyInvocation.MyCommand.Path
+$CommonProfileDir = Split-Path $CommonProfile
+$CommonMachineConfigDir = Split-Path $CommonProfileDir
 
-Write-Host "Executing Common Profile '$COMMONPROFILE'"
+Write-Host "Executing Common Profile '$CommonProfile'"
 
 $Script:IsDevMachine = $env:COMPUTERNAME -iin ('WIMDESK')
 $Script:IsMyForceDevMachine = $env:COMPUTERNAME -iin ('WIMDESK')
