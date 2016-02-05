@@ -20,13 +20,19 @@ if (-not (Test-Path (whereis choco))) {
 ###############
 # Set profile #
 ###############
-$backup = "$profile-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
-cp $profile $backup
+if (Test-Path $profile) {
+	$backup = "$profile-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+	cp $profile $backup
+} else {
+	$backup = $null
+}
 ". '$profile_new'" | Out-File $profile
 
-$compare = Compare-Object (Get-Content $profile) (Get-Content $backup)
-if ($compare) {
-	Write-Warning "Your WindowsPowerShell profile '$profile' was changed (backup saved to '$backup').  Changes:`n$($compare | Out-String)"
-} else {
-	Remove-Item $backup
+if ($backup) {
+	$compare = Compare-Object (Get-Content $profile) (Get-Content $backup)
+	if ($compare) {
+		Write-Warning "Your WindowsPowerShell profile '$profile' was changed (backup saved to '$backup').  Changes:`n$($compare | Out-String)"
+	} else {
+		Remove-Item $backup
+	}
 }
