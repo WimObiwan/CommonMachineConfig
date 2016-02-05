@@ -37,3 +37,5 @@ if ($backup) {
 		Remove-Item $backup
 	}
 }
+
+Write-Host "Install.ps1 finished."
