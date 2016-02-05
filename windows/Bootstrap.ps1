@@ -9,7 +9,7 @@ if (-not [bool](([System.Security.Principal.WindowsIdentity]::GetCurrent()).grou
 }
 
 # Ensure chocolatey
-if (-not (Test-Path (whereis choco))) {
+if (-not (Test-Path (where.exe choco))) {
 	Write-Host "Installing chocolatey"
 	iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
 }
@@ -18,6 +18,8 @@ Write-Host "Installing GIT"
 choco install git
 
 $targetdir = Join-Path $env:USERPROFILE CommonMachineConfig
+
+Set-Alias git (Join-Path $env:ProgramFiles 'git\cmd\git.exe')
 
 Write-Host "Cloning CommonMachineConfig"
 git clone https://github.com/WimObiwan/CommonMachineConfig.git "$targetdir"
