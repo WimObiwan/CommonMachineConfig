@@ -1,32 +1,23 @@
 
+# e.g.
+#iex ((new-object net.webclient).DownloadString('...'))
+
 # Check Administrator
 if (-not [bool](([System.Security.Principal.WindowsIdentity]::GetCurrent()).groups -match "S-1-5-32-544")) {
 	Write-Error "This script must be run as administrator!"
 	exit 1
 }
 
-# Run the Powershell profile
-$scriptpath = Split-Path $MyInvocation.MyCommand.Path
-$profile_new = Join-Path $scriptpath "WindowsPowerShell\profile.ps1"
-. "$profile_new"
-
 # Ensure chocolatey
 if (-not (Test-Path (whereis choco))) {
 	iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
 }
 
-# TODO: Install Powershell 4, ...
+choco install git
 
-###############
-# Set profile #
-###############
-$backup = "$profile-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
-cp $profile $backup
-". '$profile_new'" | Out-File $profile
+$targetdir = Join-Path $env:USERPROFILE CommonMachineConfig
 
-$compare = Compare-Object (Get-Content $profile) (Get-Content $backup)
-if ($compare) {
-	Write-Warning "Your WindowsPowerShell profile '$profile' was changed (backup saved to '$backup').  Changes:`n$($compare | Out-String)"
-} else {
-	Remove-Item $backup
-}
+git clone https://github.com/WimObiwan/CommonMachineConfig.git "$targetdir"
+
+cd Join-Path ($targetdir "windows\PowerShell")
+.\Install.ps1
