@@ -21,6 +21,10 @@ $targetdir = Join-Path $env:USERPROFILE CommonMachineConfig
 
 Set-Alias git (Join-Path $env:ProgramFiles 'git\cmd\git.exe')
 
+if (Test-Path $targetdir) {
+	Remove-Item -Recurse -Force $targetdir
+}
+
 Write-Host "Cloning CommonMachineConfig"
 git clone https://github.com/WimObiwan/CommonMachineConfig.git "$targetdir"
 
