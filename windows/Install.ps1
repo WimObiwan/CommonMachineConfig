@@ -26,7 +26,7 @@ if (Test-Path $profile) {
 } else {
 	$backup = $null
 }
-mkdir -force $profiledir
+mkdir -force $profiledir | Out-Null
 ". '$profile_new'" | Out-File $profile
 
 if ($backup) {
