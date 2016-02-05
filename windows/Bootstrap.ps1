@@ -24,6 +24,6 @@ Set-Alias git (Join-Path $env:ProgramFiles 'git\cmd\git.exe')
 Write-Host "Cloning CommonMachineConfig"
 git clone https://github.com/WimObiwan/CommonMachineConfig.git "$targetdir"
 
-$install = Join-Path $targetdir "windows\PowerShell\Install.ps1"
+$install = Join-Path $targetdir "windows\Install.ps1"
 Write-Host "Bootstrap done.  Launching Install at '$install'."
 . $install
