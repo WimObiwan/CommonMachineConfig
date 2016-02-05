@@ -15,7 +15,37 @@ if (-not (Test-Path (whereis choco))) {
 	iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
 }
 
-# TODO: Install Powershell 4, ...
+$Script:IsDevMachine = $env:COMPUTERNAME -iin ('WIMDESK')
+$Script:IsMyForceDevMachine = $env:COMPUTERNAME -iin ('WIMDESK')
+$Script:IsDesktop = $env:COMPUTERNAME -iin ('WIMDESK')
+
+# Runtimes
+choco install vcredist2013 --yes
+choco install vcredist2012 --yes
+choco install vcredist2010 --yes
+choco install vcredist2008 --yes
+choco install vcredist2005 --yes
+choco install DotNet4.5 --yes
+
+# Sysadmin tools
+choco install chocolateygui --yes
+choco install notepadplusplus --yes
+choco install LinkShellExtension --yes
+choco install pscx --yes
+choco install poshgit --yes
+choco install putty --yes
+choco install gitextensions --yes
+#choco install tortoisesvn --yes
+#choco install tortoisegit --yes
+choco install kdiff3 --yes
+choco install wincdemu --yes
+
+if (-$Script:IsDesktop) {
+	choco install greenshot
+	choco install terminals
+	choco install vmwarevsphereclient
+	choco install keepass-classic
+}
 
 ###############
 # Set profile #
@@ -37,5 +67,8 @@ if ($backup) {
 		Remove-Item $backup
 	}
 }
+
+Write-Host "Running profile again."
+. "$profile"
 
 Write-Host "Install.ps1 finished."
