@@ -5,7 +5,7 @@ $CommonMachineConfigDir = Split-Path $CommonProfileDir
 
 Write-Host "Executing Common Profile '$CommonProfile'"
 
-$Script:IsDevMachine = $env:COMPUTERNAME -iin ('WIMDESK')
+$Script:IsCompilerMachine = $env:COMPUTERNAME -iin ('WIMDESK')
 $Script:IsMyForceDevMachine = $env:COMPUTERNAME -iin ('WIMDESK')
 
 function Set-AliasWithCheck {
@@ -31,10 +31,7 @@ Set-AliasWithCheck edit 'C:\Program Files (x86)\Notepad++\notepad++.exe'
 Set-AliasWithCheck nano 'C:\Program Files (x86)\Notepad++\notepad++.exe'
 Set-AliasWithCheck 7z 'C:\Program Files\7-Zip\7z.exe'
 Set-Alias Gui (whereis powershell_ise.exe)
-
-if ($Script:IsDevMachine) {
-	Set-AliasWithCheck FxGqlC 'C:\Tools\FxGqlC\FxGqlC.exe'
-}
+Set-AliasWithCheck FxGqlC 'C:\Tools\FxGqlC\FxGqlC.exe'
 
 if ($Script:IsMyForceDevMachine) {
 	Set-Alias CTDesignDebug 'c:\SourceGIT\CTArchitect\CTDesign\Debug\CTDesign.exe'

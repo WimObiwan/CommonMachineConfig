@@ -15,7 +15,7 @@ if (-not (Test-Path (whereis choco))) {
 	iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
 }
 
-$Script:IsDevMachine = $env:COMPUTERNAME -iin ('WIMDESK')
+$Script:IsCompilerMachine = $env:COMPUTERNAME -iin ('WIMDESK')
 $Script:IsMyForceDevMachine = $env:COMPUTERNAME -iin ('WIMDESK')
 $Script:IsDesktop = $env:COMPUTERNAME -iin ('WIMDESK')
 
@@ -40,11 +40,19 @@ choco install gitextensions --yes
 choco install kdiff3 --yes
 choco install wincdemu --yes
 
+#choco cygwin
+#choco cyg-get
+#cyg-get git,git-svn
+
+if (-$Script:IsCompilerMachine) {
+	#choco install VisualStudio2013Professional -InstallArguments "/Features:'WebTools Win8SDK'"
+}
+
 if (-$Script:IsDesktop) {
-	choco install greenshot
-	choco install terminals
-	choco install vmwarevsphereclient
-	choco install keepass-classic
+	choco install greenshot --yes
+	choco install terminals --yes
+	choco install vmwarevsphereclient --yes
+	choco install keepass-classic --yes
 }
 
 ###############
