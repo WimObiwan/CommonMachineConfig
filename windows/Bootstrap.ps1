@@ -15,7 +15,7 @@ if (-not (Test-Path (where.exe choco))) {
 }
 
 Write-Host "Installing GIT"
-choco install git
+choco install git --yes
 
 $targetdir = Join-Path $env:USERPROFILE CommonMachineConfig
 
