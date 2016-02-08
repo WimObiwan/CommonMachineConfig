@@ -39,6 +39,7 @@ choco install gitextensions --yes
 #choco install tortoisegit --yes
 choco install kdiff3 --yes
 choco install wincdemu --yes
+choco install fxgqlc --yes
 
 #choco cygwin
 #choco cyg-get
