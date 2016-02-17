@@ -3,7 +3,7 @@ $CommonProfile = $MyInvocation.MyCommand.Path
 $CommonProfileDir = Split-Path $CommonProfile
 $CommonMachineConfigDir = Split-Path $CommonProfileDir
 
-#Changes needed after domain changes
+#Fixed HOMEDRIVE/HOMEPATH after domain changes
 $env:HOMEDRIVE = ($env:USERPROFILE -replace '(.*\:).*', '$1')
 $env:HOMEPATH = ($env:USERPROFILE -replace '.*\:(.*)', '$1')
 
