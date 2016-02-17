@@ -3,6 +3,10 @@ $CommonProfile = $MyInvocation.MyCommand.Path
 $CommonProfileDir = Split-Path $CommonProfile
 $CommonMachineConfigDir = Split-Path $CommonProfileDir
 
+#Changes needed after domain changes
+$env:HOMEDRIVE = ($env:USERPROFILE -replace '(.*\:).*', '$1')
+$env:HOMEPATH = ($env:USERPROFILE -replace '.*\:(.*)', '$1')
+
 Write-Host "Executing Common Profile '$CommonProfile'"
 
 $Script:IsCompilerMachine = $env:COMPUTERNAME -iin ('WIMDESK')
@@ -33,6 +37,8 @@ Set-AliasWithCheck 7z 'C:\Program Files\7-Zip\7z.exe'
 Set-Alias Gui (whereis powershell_ise.exe)
 Set-AliasWithCheck FxGqlC 'C:\Tools\FxGqlC\FxGqlC.exe'
 
+$DefaultDir = $env:SystemDrive
+
 if ($Script:IsMyForceDevMachine) {
 	Set-Alias CTDesignDebug 'c:\SourceGIT\CTArchitect\CTDesign\Debug\CTDesign.exe'
 	Set-Alias CTDesign 'c:\SourceGIT\CTArchitect\CTDesign\Release\CTDesign.exe'
@@ -41,6 +47,8 @@ if ($Script:IsMyForceDevMachine) {
 	Set-Alias DoProjectCopy DoProjectCopyFunc
 	function DoProjectCopyFunc2 { cscript.exe C:\SourceGIT\CTArchitect2\ProjectCopy\UpdateFromProject.vbs C:\SourceGIT\ContactCentre }
 	Set-Alias DoProjectCopy2 DoProjectCopyFunc2
+	
+	$DefaultDir = 'c:\SourceGIT'
 }
 
 if (Get-Module posh-git) {
@@ -52,5 +60,7 @@ if (Get-Module posh-git) {
 	Rename-Item Function:\Prompt PoshGitPrompt -Force
 	function Prompt() {if(Test-Path Function:\PrePoshGitPrompt){++$global:poshScope; New-Item function:\script:Write-host -value "param([object] `$object, `$backgroundColor, `$foregroundColor, [switch] `$nonewline) " -Force | Out-Null;$private:p = PrePoshGitPrompt; if(--$global:poshScope -eq 0) {Remove-Item function:\Write-Host -Force}}PoshGitPrompt}
 }
+
+cd $DefaultDir
 
 Write-Host
