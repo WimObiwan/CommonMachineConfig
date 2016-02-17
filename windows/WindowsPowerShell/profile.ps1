@@ -51,14 +51,31 @@ if ($Script:IsMyForceDevMachine) {
 	$DefaultDir = 'c:\SourceGIT'
 }
 
+Install-Module posh-git
 if (Get-Module posh-git) {
-	# 
-	if(Test-Path Function:\Prompt) {Rename-Item Function:\Prompt PrePoshGitPrompt -Force}
-	. 'C:\tools\poshgit\dahlbyk-posh-git-fadc4dd\profile.example.ps1'
-	$env:DebuggingTools = 'C:\Program Files (x86)\Windows Kits\8.1\Debuggers\x64'
-	#. C:\Users\wim\Documents\WindowsPowerShell\sudo.ps1
-	Rename-Item Function:\Prompt PoshGitPrompt -Force
-	function Prompt() {if(Test-Path Function:\PrePoshGitPrompt){++$global:poshScope; New-Item function:\script:Write-host -value "param([object] `$object, `$backgroundColor, `$foregroundColor, [switch] `$nonewline) " -Force | Out-Null;$private:p = PrePoshGitPrompt; if(--$global:poshScope -eq 0) {Remove-Item function:\Write-Host -Force}}PoshGitPrompt}
+    # Taken from PoshGit example profile
+	
+	# Load posh-git module from current directory
+	Import-Module posh-git
+
+	# If module is installed in a default location ($env:PSModulePath),
+	# use this instead (see about_Modules for more information):
+	# Import-Module posh-git
+
+
+	# Set up a simple prompt, adding the git prompt parts inside git repos
+	function global:prompt {
+		$realLASTEXITCODE = $LASTEXITCODE
+
+		Write-Host($pwd.ProviderPath) -nonewline
+
+		Write-VcsStatus
+
+		$global:LASTEXITCODE = $realLASTEXITCODE
+		return "> "
+	}
+
+	Start-SshAgent -Quiet
 }
 
 cd $DefaultDir

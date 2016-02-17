@@ -32,14 +32,18 @@ choco install chocolateygui --yes
 choco install notepadplusplus --yes
 choco install LinkShellExtension --yes
 choco install pscx --yes
-choco install poshgit --yes
+###choco install poshgit --yes ### Use psget instead!!!
 choco install putty --yes
 choco install gitextensions --yes
-#choco install tortoisesvn --yes
-#choco install tortoisegit --yes
 choco install kdiff3 --yes
 choco install wincdemu --yes
 choco install fxgqlc --yes
+choco install psget --yes
+#Not used anymore
+#choco install tortoisesvn --yes
+#choco install tortoisegit --yes
+
+Install-Module posh-git
 
 #choco cygwin
 #choco cyg-get
